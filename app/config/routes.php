@@ -49,54 +49,6 @@ $routes->scope('/', function (RouteBuilder $builder) {
     $builder->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
 });
 
-$routes->scope('/public', function (RouteBuilder $builder) {
-    (new AutoRouter($builder))->buildResources();
-    $builder->connect('/', [
-        'plugin' => 'SwaggerBake', 'controller' => 'Swagger', 'action' => 'index'
-    ]);
-    $builder->connect('/contexts/*', [
-        'plugin' => 'MixerApi/JsonLdView', 'controller' => 'JsonLd', 'action' => 'contexts'
-    ]);
-    $builder->connect('/vocab', [
-        'plugin' => 'MixerApi/JsonLdView', 'controller' => 'JsonLd', 'action' => 'vocab'
-    ]);
-    $builder->resources('FilmReports', [
-        'only' => ['by-rating','by-category'],
-        'map' => [
-            'by-rating' => [
-                'method' => 'GET',
-                'action' => 'byRating',
-            ],
-            'by-category' => [
-                'method' => 'GET',
-                'action' => 'byCategory',
-            ]
-        ]
-    ]);
-    $builder->resources('Actors', [
-        'only' => ['view','index','view-films'],
-        'map' => [
-            'view-films' => [
-                'method' => 'get',
-                'action' => 'viewFilms',
-                'path' => ':id/films'
-            ]
-        ]
-    ]);
-    $builder->resources('Films', [
-        'only' => ['view','index','view-actors'],
-        'map' => [
-            'view-actors' => [
-                'method' => 'get',
-                'action' => 'viewActors',
-                'path' => ':id/actors'
-            ]
-        ]
-    ]);
-    $builder->setExtensions(['json', 'xml']);
-    $builder->fallbacks();
-});
-
 /*
  * If you need a different set of middleware or none at all,
  * open new scope and define routes there.

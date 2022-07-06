@@ -5,6 +5,7 @@ namespace App\Model\Table;
 
 use Cake\Http\ServerRequest;
 use Cake\ORM\Query;
+use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -12,6 +13,7 @@ use Cake\Validation\Validator;
  * Actors Model
  *
  * @property \App\Model\Table\FilmActorsTable&\Cake\ORM\Association\HasMany $FilmActors
+ *
  * @method \App\Model\Entity\Actor newEmptyEntity()
  * @method \App\Model\Entity\Actor newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Actor[] newEntities(array $data, array $options = [])
@@ -25,6 +27,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Actor[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
  * @method \App\Model\Entity\Actor[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \App\Model\Entity\Actor[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class ActorsTable extends Table
@@ -64,20 +67,34 @@ class ActorsTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->integer('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('created_by')
+            ->allowEmptyString('created_by');
 
         $validator
-            ->scalar('first_name')
-            ->maxLength('first_name', 64)
-            ->requirePresence('first_name', 'create')
-            ->notEmptyString('first_name');
+            ->nonNegativeInteger('modified_by')
+            ->allowEmptyString('modified_by');
 
         $validator
-            ->scalar('last_name')
-            ->maxLength('last_name', 64)
-            ->requirePresence('last_name', 'create')
-            ->notEmptyString('last_name');
+            ->dateTime('deleted_at')
+            ->allowEmptyDateTime('deleted_at');
+
+        $validator
+            ->nonNegativeInteger('version')
+            ->notEmptyString('version');
+
+        $validator
+            ->uuid('uuid')
+            ->allowEmptyString('uuid');
+
+        $validator
+            ->scalar('firstname')
+            ->maxLength('firstname', 255)
+            ->allowEmptyString('firstname');
+
+        $validator
+            ->scalar('lastname')
+            ->maxLength('lastname', 255)
+            ->allowEmptyString('lastname');
 
         return $validator;
     }

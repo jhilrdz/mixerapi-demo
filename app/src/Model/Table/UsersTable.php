@@ -43,6 +43,7 @@ class UsersTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        $this->addBehavior('Search.Search');
         $this->addBehavior('Timestamp');
     }
 
@@ -55,6 +56,36 @@ class UsersTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
+            ->nonNegativeInteger('created_by')
+            ->allowEmptyString('created_by');
+
+        $validator
+            ->nonNegativeInteger('modified_by')
+            ->allowEmptyString('modified_by');
+
+        $validator
+            ->dateTime('deleted_at')
+            ->allowEmptyDateTime('deleted_at');
+
+        $validator
+            ->nonNegativeInteger('version')
+            ->notEmptyString('version');
+
+        $validator
+            ->uuid('uuid')
+            ->allowEmptyString('uuid');
+
+        $validator
+            ->scalar('firstname')
+            ->maxLength('firstname', 255)
+            ->allowEmptyString('firstname');
+
+        $validator
+            ->scalar('lastname')
+            ->maxLength('lastname', 255)
+            ->allowEmptyString('lastname');
+
+        $validator
             ->email('email')
             ->requirePresence('email', 'create')
             ->notEmptyString('email')
@@ -65,6 +96,28 @@ class UsersTable extends Table
             ->maxLength('password', 255)
             ->requirePresence('password', 'create')
             ->notEmptyString('password');
+
+        $validator
+            ->boolean('active_flg')
+            ->notEmptyString('active_flg');
+
+        $validator
+            ->boolean('blocked_flg')
+            ->notEmptyString('blocked_flg');
+
+        $validator
+            ->scalar('avatar')
+            ->maxLength('avatar', 255)
+            ->allowEmptyString('avatar');
+
+        $validator
+            ->scalar('refresh_token')
+            ->maxLength('refresh_token', 255)
+            ->allowEmptyString('refresh_token');
+
+        $validator
+            ->dateTime('refresh_token_expire')
+            ->allowEmptyDateTime('refresh_token_expire');
 
         return $validator;
     }

@@ -39,7 +39,8 @@
         "psr-4": {
             "App\\": "src/",
             "AdminApi\\": "plugins/AdminApi/src/",
-            "AuthenticationApi\\": "plugins/AuthenticationApi/src/"
+            "AuthenticationApi\\": "plugins/AuthenticationApi/src/",
+            "PublicApi\\": "plugins/PublicApi/src/"
         }
     },
     "autoload-dev": {
@@ -47,7 +48,8 @@
             "App\\Test\\": "tests/",
             "Cake\\Test\\": "vendor/cakephp/cakephp/tests/",
             "AdminApi\\Test\\": "plugins/AdminApi/tests/",
-            "AuthenticationApi\\Test\\": "plugins/AuthenticationApi/tests/"
+            "AuthenticationApi\\Test\\": "plugins/AuthenticationApi/tests/",
+            "PublicApi\\Test\\": "plugins/PublicApi/tests/"
         }
     },
     "scripts": {

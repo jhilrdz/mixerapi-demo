@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\Http\ServerRequest;
 use Cake\ORM\Query;
+use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  * Languages Model
  *
  * @property \App\Model\Table\FilmsTable&\Cake\ORM\Association\HasMany $Films
+ *
  * @method \App\Model\Entity\Language newEmptyEntity()
  * @method \App\Model\Entity\Language newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Language[] newEntities(array $data, array $options = [])
@@ -25,6 +26,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Language[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
  * @method \App\Model\Entity\Language[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \App\Model\Entity\Language[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ *
+ * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class LanguagesTable extends Table
 {
@@ -41,7 +44,9 @@ class LanguagesTable extends Table
         $this->setTable('languages');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
+
         $this->addBehavior('Search.Search');
+        $this->addBehavior('Timestamp');
 
         $this->hasMany('Films', [
             'foreignKey' => 'language_id',
@@ -57,18 +62,34 @@ class LanguagesTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->integer('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('created_by')
+            ->allowEmptyString('created_by');
 
         $validator
-            ->scalar('name')
-            ->maxLength('name', 20)
-            ->requirePresence('name', 'create')
-            ->notEmptyString('name');
+            ->nonNegativeInteger('modified_by')
+            ->allowEmptyString('modified_by');
 
         $validator
-            ->integer('is_active')
-            ->inList('is_active', [1,0]);
+            ->dateTime('deleted_at')
+            ->allowEmptyDateTime('deleted_at');
+
+        $validator
+            ->nonNegativeInteger('version')
+            ->notEmptyString('version');
+
+        $validator
+            ->uuid('uuid')
+            ->allowEmptyString('uuid');
+
+        $validator
+            ->scalar('title')
+            ->maxLength('title', 255)
+            ->allowEmptyString('title');
+
+        $validator
+            ->scalar('lov_language_status')
+            ->maxLength('lov_language_status', 50)
+            ->allowEmptyString('lov_language_status');
 
         return $validator;
     }

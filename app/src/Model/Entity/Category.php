@@ -14,8 +14,15 @@ use MixerApi\JsonLdView\JsonLdSchema;
  * Category Entity
  *
  * @property int $id
- * @property string $name Category name
- * @property \Cake\I18n\FrozenTime $modified Last modified date/time
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\FrozenTime|null $modified
+ * @property int|null $created_by
+ * @property int|null $modified_by
+ * @property \Cake\I18n\FrozenTime|null $deleted_at
+ * @property int $version
+ * @property string|null $uuid
+ * @property string|null $title
+ * @property string|null $description
  *
  * @property \App\Model\Entity\FilmCategory[] $film_categories
  */
@@ -28,15 +35,13 @@ class Category extends Entity implements HalResourceInterface, JsonLdDataInterfa
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<string, bool>
      */
     protected $_accessible = [
-        'name' => true,
-        'modified' => true,
-        'film_categories' => true,
+        '*' => false
     ];
 
-    public function _getName(?string $v)
+    public function _getTitle(?string $v)
     {
         return h($v);
     }

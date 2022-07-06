@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -12,6 +13,7 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\FilmsTable&\Cake\ORM\Association\BelongsTo $Films
  * @property \App\Model\Table\CategoriesTable&\Cake\ORM\Association\BelongsTo $Categories
+ *
  * @method \App\Model\Entity\FilmCategory newEmptyEntity()
  * @method \App\Model\Entity\FilmCategory newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\FilmCategory[] newEntities(array $data, array $options = [])
@@ -25,6 +27,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\FilmCategory[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
  * @method \App\Model\Entity\FilmCategory[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \App\Model\Entity\FilmCategory[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class FilmCategoriesTable extends Table
@@ -41,7 +44,7 @@ class FilmCategoriesTable extends Table
 
         $this->setTable('film_categories');
         $this->setDisplayField('uuid');
-        $this->setPrimaryKey('uuid');
+        $this->setPrimaryKey(['film_id', 'category_id']);
 
         $this->addBehavior('Search.Search');
         $this->addBehavior('Timestamp');
@@ -65,13 +68,16 @@ class FilmCategoriesTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->scalar('uuid')
-            ->allowEmptyString('uuid', null, 'create')
-            ->add('uuid', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->nonNegativeInteger('created_by')
+            ->allowEmptyString('created_by');
 
-        $validator->integer('actor_id');
+        $validator
+            ->nonNegativeInteger('modified_by')
+            ->allowEmptyString('modified_by');
 
-        $validator->integer('category_id');
+        $validator
+            ->uuid('uuid')
+            ->allowEmptyString('uuid');
 
         return $validator;
     }
@@ -85,9 +91,8 @@ class FilmCategoriesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->isUnique(['uuid']), ['errorField' => 'uuid']);
-        $rules->add($rules->existsIn(['film_id'], 'Films'), ['errorField' => 'film_id']);
-        $rules->add($rules->existsIn(['category_id'], 'Categories'), ['errorField' => 'category_id']);
+        $rules->add($rules->existsIn('film_id', 'Films'), ['errorField' => 'film_id']);
+        $rules->add($rules->existsIn('category_id', 'Categories'), ['errorField' => 'category_id']);
 
         return $rules;
     }

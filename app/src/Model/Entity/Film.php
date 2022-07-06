@@ -14,23 +14,31 @@ use MixerApi\JsonLdView\JsonLdSchema;
  * Film Entity
  *
  * @property int $id
- * @property string $title Film Title
- * @property string|null $description Film description
- * @property int|null $release_year Release Year
- * @property int $language_id Language ID
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\FrozenTime|null $modified
+ * @property int|null $created_by
+ * @property int|null $modified_by
+ * @property \Cake\I18n\FrozenTime|null $deleted_at
+ * @property int $version
+ * @property string|null $uuid
+ * @property int $language_id
+ * @property string|null $title
+ * @property string|null $description
+ * @property int|null $release_year
  * @property int $rental_duration
  * @property string $rental_rate
- * @property int|null $length Film duration in hours
+ * @property int|null $length
  * @property string $replacement_cost
- * @property string|null $rating Film Rating (e.g. PG, R, etc..)
- * @property string|null $special_features Film special features
- * @property \Cake\I18n\FrozenTime|null $modified Last modified date/time
+ * @property string|null $lov_film_rating
+ * @property string|null $special_features
+ * @property string|null $lov_film_status
  *
  * @property \App\Model\Entity\Language $language
  * @property \App\Model\Entity\FilmActor[] $film_actors
  * @property \App\Model\Entity\FilmCategory[] $film_categories
  * @property \App\Model\Entity\FilmText[] $film_texts
- * @property \App\Model\Entity\Inventory[] $inventories
+ * @property \App\Model\Entity\Actor[] $actors
+ * @property \App\Model\Entity\Category[] $categories
  */
 class Film extends Entity implements HalResourceInterface, JsonLdDataInterface
 {
@@ -41,25 +49,10 @@ class Film extends Entity implements HalResourceInterface, JsonLdDataInterface
      * be mass assigned. For security purposes, it is advised to set '*' to false
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
-     * @var array
+     * @var array<string, bool>
      */
     protected $_accessible = [
-        'title' => true,
-        'description' => true,
-        'release_year' => true,
-        'language_id' => true,
-        'rental_duration' => true,
-        'rental_rate' => true,
-        'length' => true,
-        'replacement_cost' => true,
-        'rating' => true,
-        'special_features' => true,
-        'modified' => true,
-        'language' => true,
-        'film_actors' => true,
-        'film_categories' => true,
-        'film_texts' => true,
-        'inventories' => true,
+        '*' => false
     ];
 
     public function _getTitle(?string $v)

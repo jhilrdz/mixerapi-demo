@@ -6,7 +6,7 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * FilmText Entity
+ * Customer Entity
  *
  * @property int $id
  * @property \Cake\I18n\FrozenTime|null $created
@@ -16,13 +16,17 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime|null $deleted_at
  * @property int $version
  * @property string|null $uuid
- * @property int $film_id
- * @property string|null $title
- * @property string|null $description
+ * @property string|null $firstname
+ * @property string|null $lastname
+ * @property string|null $email
+ * @property string|null $phone
+ * @property int|null $address_id
+ * @property string|null $lov_customer_status
  *
- * @property \App\Model\Entity\Film $film
+ * @property \App\Model\Entity\Address $address
+ * @property \App\Model\Entity\Rental[] $rentals
  */
-class FilmText extends Entity
+class Customer extends Entity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -34,6 +38,20 @@ class FilmText extends Entity
      * @var array<string, bool>
      */
     protected $_accessible = [
-        '*' => false
+        'created' => true,
+        'modified' => true,
+        'created_by' => true,
+        'modified_by' => true,
+        'deleted_at' => true,
+        'version' => true,
+        'uuid' => true,
+        'firstname' => true,
+        'lastname' => true,
+        'email' => true,
+        'phone' => true,
+        'address_id' => true,
+        'lov_customer_status' => true,
+        'address' => true,
+        'rentals' => true,
     ];
 }

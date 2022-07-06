@@ -1,0 +1,42 @@
+openapi: "3.0.0"
+info:
+  version: "v0.0.0"
+  title: MixerAPI Demo (Public API)
+  description: |
+    Check out [MixerAPI.com](https://mixerapi.com) to streamline your API development.
+
+    You can view the source code for this [demo here](https://github.com/mixerapi/demo).
+
+    If you are viewing this on demo.mixerapi.com then the database resets every 24 hours.
+
+    Browse the [JSON-LD vocabulary](/public/vocab) for this API.
+
+    Go back to the [homepage](/).
+
+  license:
+    name: MIT
+
+paths:
+
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Exception:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 500
+        url:
+          type: string
+          example: /url/path
+        message:
+          type: string
+          example: Internal Error
+      xml:
+        name: response

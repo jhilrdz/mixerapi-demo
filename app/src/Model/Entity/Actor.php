@@ -14,9 +14,15 @@ use MixerApi\JsonLdView\JsonLdSchema;
  * Actor Entity
  *
  * @property int $id
- * @property string $first_name Actor First Name
- * @property string $last_name Actor Last Name
- * @property \Cake\I18n\FrozenTime $modified Last modified date/time
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\FrozenTime|null $modified
+ * @property int|null $created_by
+ * @property int|null $modified_by
+ * @property \Cake\I18n\FrozenTime|null $deleted_at
+ * @property int $version
+ * @property string|null $uuid
+ * @property string|null $firstname
+ * @property string|null $lastname
  *
  * @property \App\Model\Entity\FilmActor[] $film_actors
  */
@@ -30,24 +36,21 @@ class Actor extends Entity implements HalResourceInterface, JsonLdDataInterface
      * (or remove it), and explicitly make individual fields accessible as needed.
      *
      * @var array
-     */
+ */
     protected $_accessible = [
-        'first_name' => true,
-        'last_name' => true,
-        'modified' => true,
-        'film_actors' => true,
+        '*' => false,
     ];
 
     protected $_hidden = [
         '_joinData',
     ];
 
-    public function _getFirstName(?string $v)
+    public function _getFirstname(?string $v)
     {
         return h($v);
     }
 
-    public function _getLastName(?string $v)
+    public function _getLastname(?string $v)
     {
         return h($v);
     }
@@ -76,7 +79,7 @@ class Actor extends Entity implements HalResourceInterface, JsonLdDataInterface
      * @inheritDoc
      */
     public function getJsonLdType(): string
-    {
+{
         return 'https://schema.org/actor';
     }
 

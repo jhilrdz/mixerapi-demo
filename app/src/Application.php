@@ -86,6 +86,7 @@ class Application extends BaseApplication
          * Loads all events for all EventInterfaces in App\Event
          */
         (new EventListenerLoader())->load();
+        $this->addPlugin('PublicApi');
     }
 
     /**

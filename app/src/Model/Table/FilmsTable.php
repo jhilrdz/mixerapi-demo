@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use _HumbugBox221ad6f1b81f\React\Http\Server;
-use Cake\Http\ServerRequest;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -18,7 +16,8 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\FilmActorsTable&\Cake\ORM\Association\HasMany $FilmActors
  * @property \App\Model\Table\FilmCategoriesTable&\Cake\ORM\Association\HasMany $FilmCategories
  * @property \App\Model\Table\FilmTextsTable&\Cake\ORM\Association\HasMany $FilmTexts
- * @property \App\Model\Table\InventoriesTable&\Cake\ORM\Association\HasMany $Inventories
+ * @property \App\Model\Table\RentalsTable&\Cake\ORM\Association\HasMany $Rentals
+ *
  * @method \App\Model\Entity\Film newEmptyEntity()
  * @method \App\Model\Entity\Film newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Film[] newEntities(array $data, array $options = [])
@@ -32,6 +31,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Film[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
  * @method \App\Model\Entity\Film[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \App\Model\Entity\Film[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class FilmsTable extends Table
@@ -42,20 +42,19 @@ class FilmsTable extends Table
      * @param array $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config): void
-    {
+    public function initialize(array $config): void {
         parent::initialize($config);
 
         $this->setTable('films');
         $this->setDisplayField('title');
         $this->setPrimaryKey('id');
 
-        $this->addBehavior('Timestamp');
         $this->addBehavior('Search.Search');
+        $this->addBehavior('Timestamp');
 
         $this->belongsTo('Languages', [
             'foreignKey' => 'language_id',
-            'joinType' => 'INNER',
+            'joinType'   => 'INNER',
         ]);
         $this->hasMany('FilmActors', [
             'foreignKey' => 'film_id',
@@ -66,7 +65,7 @@ class FilmsTable extends Table
         $this->hasMany('FilmTexts', [
             'foreignKey' => 'film_id',
         ]);
-        $this->hasMany('Inventories', [
+        $this->hasMany('Rentals', [
             'foreignKey' => 'film_id',
         ]);
         $this->belongsToMany('Actors', [
@@ -83,22 +82,45 @@ class FilmsTable extends Table
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
-    public function validationDefault(Validator $validator): Validator
-    {
+    public function validationDefault(Validator $validator): Validator {
         $validator
-            ->nonNegativeInteger('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('created_by')
+            ->allowEmptyString('created_by');
+
+        $validator
+            ->nonNegativeInteger('modified_by')
+            ->allowEmptyString('modified_by');
+
+        $validator
+            ->dateTime('deleted_at')
+            ->allowEmptyDateTime('deleted_at');
+
+        $validator
+            ->nonNegativeInteger('version')
+            ->notEmptyString('version');
+
+        $validator
+            ->uuid('uuid')
+            ->allowEmptyString('uuid');
+
+        $validator
+            ->nonNegativeInteger('language_id')
+            ->inList(
+                'language_id',
+                array_keys(TableRegistry::getTableLocator()->get('Languages')->find('list')->toArray()),
+                'Must be a valid Language ID'
+            )
+            ->requirePresence('language_id', 'create')
+            ->notEmptyString('language_id');
 
         $validator
             ->scalar('title')
             ->maxLength('title', 255)
-            ->requirePresence('title', 'create')
-            ->notEmptyString('title');
+            ->allowEmptyString('title');
 
         $validator
             ->scalar('description')
-            ->requirePresence('description', 'create')
-            ->notEmptyString('description');
+            ->allowEmptyString('description');
 
         $validator
             ->scalar('release_year')
@@ -117,37 +139,31 @@ class FilmsTable extends Table
             ->allowEmptyString('rental_rate');
 
         $validator
-            ->decimal('replacement_cost')
-            ->greaterThanOrEqual('replacement_cost', 1, 'Value must be >= 1')
-            ->allowEmptyString('replacement_cost');
-
-        $validator
-            ->decimal('length')
+            ->integer('length')
             ->greaterThanOrEqual('length', 1, 'Value must be >= 1')
             ->allowEmptyString('length');
 
-        $ratings = ['PG','PG-13','R','NC-17','NR'];
-
         $validator
-            ->scalar('rating')
-            ->requirePresence('rating', 'create')
-            ->inList('rating', $ratings, 'Value must be one of: ' . implode(', ', $ratings))
-            ->maxLength('rating', 5);
+            ->decimal('replacement_cost')
+            ->greaterThanOrEqual('replacement_cost', 1, 'Value must be >= 1')
+            ->notEmptyString('replacement_cost');
+
+        $ratings = ['PG', 'PG-13', 'R', 'NC-17', 'NR'];
+        $validator
+            ->scalar('lov_film_rating')
+            ->requirePresence('lov_film_rating', 'create')
+            ->inList('lov_film_rating', $ratings, 'Value must be one of: ' . implode(', ', $ratings))
+            ->maxLength('lov_film_rating', 5);
 
         $validator
             ->scalar('special_features')
             ->maxLength('special_features', 255)
             ->allowEmptyString('special_features');
 
-
         $validator
-            ->nonNegativeInteger('language_id')
-            ->inList(
-                'language_id',
-                array_keys(TableRegistry::getTableLocator()->get('Languages')->find('list')->toArray()),
-                'Must be a valid Language ID'
-            )
-            ->requirePresence('language_id', 'create');
+            ->scalar('lov_film_status')
+            ->maxLength('lov_film_status', 50)
+            ->allowEmptyString('lov_film_status');
 
         return $validator;
     }
@@ -159,12 +175,8 @@ class FilmsTable extends Table
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
-    public function buildRules(RulesChecker $rules): RulesChecker
-    {
-        $rules->add(
-            $rules->existsIn(['language_id'], 'Languages', 'Language ID is required'),
-            ['errorField' => 'language_id']
-        );
+    public function buildRules(RulesChecker $rules): RulesChecker {
+        $rules->add($rules->existsIn('language_id', 'Languages'), ['errorField' => 'language_id']);
 
         return $rules;
     }
@@ -176,8 +188,7 @@ class FilmsTable extends Table
      * @param array $options
      * @return Query
      */
-    public function findGroupByRating(Query $query, array $options): Query
-    {
+    public function findGroupByRating(Query $query, array $options): Query {
         return $query
             ->select([
                 'rating',

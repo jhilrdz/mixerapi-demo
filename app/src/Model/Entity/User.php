@@ -8,14 +8,27 @@ use MixerApi\JwtAuth\Jwt\Jwt;
 use MixerApi\JwtAuth\Jwt\JwtEntityInterface;
 use MixerApi\JwtAuth\Jwt\JwtInterface;
 
+
 /**
  * User Entity
  *
- * @property string $id
+ * @property int $id
+ * @property \Cake\I18n\FrozenTime|null $created
+ * @property \Cake\I18n\FrozenTime|null $modified
+ * @property int|null $created_by
+ * @property int|null $modified_by
+ * @property \Cake\I18n\FrozenTime|null $deleted_at
+ * @property int $version
+ * @property string|null $uuid
+ * @property string|null $firstname
+ * @property string|null $lastname
  * @property string $email
  * @property string $password
- * @property \Cake\I18n\FrozenTime $created
- * @property \Cake\I18n\FrozenTime $modified
+ * @property bool $active_flg
+ * @property bool $blocked_flg
+ * @property string|null $avatar
+ * @property string|null $refresh_token
+ * @property \Cake\I18n\FrozenTime|null $refresh_token_expire
  */
 class User extends Entity implements JwtEntityInterface
 {
@@ -29,10 +42,7 @@ class User extends Entity implements JwtEntityInterface
      * @var array<string, bool>
      */
     protected $_accessible = [
-        'email' => true,
-        'password' => true,
-        'created' => true,
-        'modified' => true,
+        '*' => false
     ];
 
     /**
@@ -47,8 +57,7 @@ class User extends Entity implements JwtEntityInterface
     /**
      * @inheritDoc
      */
-    public function getJwt(): JwtInterface
-    {
+    public function getJwt(): JwtInterface {
         return new Jwt(
             exp: time() + 60 * 60 * 24,
             sub: $this->get('id'),

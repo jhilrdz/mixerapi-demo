@@ -5,6 +5,7 @@ namespace App\Model\Table;
 
 use Cake\Http\ServerRequest;
 use Cake\ORM\Query;
+use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -12,6 +13,7 @@ use Cake\Validation\Validator;
  * Categories Model
  *
  * @property \App\Model\Table\FilmCategoriesTable&\Cake\ORM\Association\HasMany $FilmCategories
+ *
  * @method \App\Model\Entity\Category newEmptyEntity()
  * @method \App\Model\Entity\Category newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Category[] newEntities(array $data, array $options = [])
@@ -25,6 +27,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Category[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
  * @method \App\Model\Entity\Category[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \App\Model\Entity\Category[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class CategoriesTable extends Table
@@ -60,14 +63,34 @@ class CategoriesTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->integer('id')
-            ->allowEmptyString('id', null, 'create');
+            ->nonNegativeInteger('created_by')
+            ->allowEmptyString('created_by');
 
         $validator
-            ->scalar('name')
-            ->maxLength('name', 25)
-            ->requirePresence('name', 'create')
-            ->notEmptyString('name');
+            ->nonNegativeInteger('modified_by')
+            ->allowEmptyString('modified_by');
+
+        $validator
+            ->dateTime('deleted_at')
+            ->allowEmptyDateTime('deleted_at');
+
+        $validator
+            ->nonNegativeInteger('version')
+            ->notEmptyString('version');
+
+        $validator
+            ->uuid('uuid')
+            ->allowEmptyString('uuid');
+
+        $validator
+            ->scalar('title')
+            ->maxLength('title', 255)
+            ->allowEmptyString('title');
+
+        $validator
+            ->scalar('description')
+            ->maxLength('description', 255)
+            ->allowEmptyString('description');
 
         return $validator;
     }
