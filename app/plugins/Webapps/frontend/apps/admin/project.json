@@ -37,7 +37,8 @@
               "with": "apps/admin/src/environments/environment.prod.ts"
             }
           ],
-          "outputHashing": "all"
+          "outputHashing": "all",
+          "baseHref": "/webapps/apps/admin/"
         },
         "development": {
           "buildOptimizer": false,
