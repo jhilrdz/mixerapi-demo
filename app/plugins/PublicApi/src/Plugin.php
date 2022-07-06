@@ -63,7 +63,7 @@ class Plugin extends BasePlugin
      * @return void
      */
     public function routes(RouteBuilder $routes): void {
-        $routes->plugin('PublicApi', ['path' => '/public'], function (RouteBuilder $builder) {
+        $routes->plugin('PublicApi', ['path' => '/api/public'], function (RouteBuilder $builder) {
             $builder->setExtensions(['json', 'xml']);
             $builder->connect('/', [
                 'plugin' => 'PublicApi', 'controller' => 'Swagger', 'action' => 'index'
@@ -106,10 +106,10 @@ class Plugin extends BasePlugin
             $builder->fallbacks();
         });
 
-        $routes->connect('/public/contexts/*', [
+        $routes->connect('/api/public/contexts/*', [
             'plugin' => 'MixerApi/JsonLdView', 'controller' => 'JsonLd', 'action' => 'contexts'
         ]);
-        $routes->connect('/public/vocab', [
+        $routes->connect('/api/public/vocab', [
             'plugin' => 'MixerApi/JsonLdView', 'controller' => 'JsonLd', 'action' => 'vocab'
         ]);
 

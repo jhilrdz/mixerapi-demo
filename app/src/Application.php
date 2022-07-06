@@ -87,7 +87,7 @@ class Application extends BaseApplication
          */
         (new EventListenerLoader())->load();
         $this->addPlugin('PublicApi');
-        $this->addPlugin('Spa');
+        $this->addPlugin('Webapps');
     }
 
     /**

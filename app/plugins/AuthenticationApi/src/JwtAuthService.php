@@ -29,7 +29,7 @@ class JwtAuthService
                 IdentifierInterface::CREDENTIAL_USERNAME => $usernameField,
                 IdentifierInterface::CREDENTIAL_PASSWORD => $passwordField,
             ],
-            'loginUrl' => '/admin/auth/login'
+            'loginUrl' => '/api/auth/login'
         ]);
 
         $service->loadIdentifier('Authentication.JwtSubject');
@@ -43,7 +43,7 @@ class JwtAuthService
             $jsonKeySet = Cache::remember('jwkset', function() {
                 return json_encode((new JwkSet)->getKeySet());
             });
-            
+
             /*
              * Caching is optional, you may also set the jwks key to the return value of (new JwkSet)->getKeySet()
              */

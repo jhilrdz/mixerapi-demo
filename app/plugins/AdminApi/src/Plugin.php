@@ -71,7 +71,7 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
      */
     public function routes(RouteBuilder $routes): void
     {
-        $routes->plugin('AdminApi', ['path' => '/admin'], function (RouteBuilder $builder) {
+        $routes->plugin('AdminApi', ['path' => '/api/admin'], function (RouteBuilder $builder) {
             $builder->setExtensions(['json','xml']);
             (new AutoRouter($builder, new ResourceScanner('AdminApi\Controller')))->buildResources();
             $builder->connect('/', [
@@ -80,10 +80,10 @@ class Plugin extends BasePlugin implements AuthenticationServiceProviderInterfac
             $builder->fallbacks();
         });
 
-        $routes->connect('/admin/contexts/*', [
+        $routes->connect('/api/admin/contexts/*', [
             'plugin' => 'MixerApi/JsonLdView', 'controller' => 'JsonLd', 'action' => 'contexts'
         ]);
-        $routes->connect('/admin/vocab', [
+        $routes->connect('/api/admin/vocab', [
             'plugin' => 'MixerApi/JsonLdView', 'controller' => 'JsonLd', 'action' => 'vocab'
         ]);
 

@@ -51,7 +51,7 @@ class Plugin extends BasePlugin
      */
     public function routes(RouteBuilder $routes): void
     {
-        $routes->plugin('AuthenticationApi', ['path' => '/admin/auth'], function (RouteBuilder $builder) {
+        $routes->plugin('AuthenticationApi', ['path' => '/api/auth'], function (RouteBuilder $builder) {
             $builder->setExtensions(['json','xml']);
             $builder->connect('/', [
                 'plugin' => 'AuthenticationApi', 'controller' => 'Swagger', 'action' => 'index'
@@ -74,10 +74,10 @@ class Plugin extends BasePlugin
             $builder->fallbacks();
         });
 
-        $routes->connect('/admin/auth/contexts/*', [
+        $routes->connect('/api/auth/contexts/*', [
             'plugin' => 'MixerApi/JsonLdView', 'controller' => 'JsonLd', 'action' => 'contexts'
         ]);
-        $routes->connect('/admin/auth/vocab', [
+        $routes->connect('/api/auth/vocab', [
             'plugin' => 'MixerApi/JsonLdView', 'controller' => 'JsonLd', 'action' => 'vocab'
         ]);
 

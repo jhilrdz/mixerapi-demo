@@ -41,7 +41,7 @@
             "AdminApi\\": "plugins/AdminApi/src/",
             "AuthenticationApi\\": "plugins/AuthenticationApi/src/",
             "PublicApi\\": "plugins/PublicApi/src/",
-            "Spa\\": "plugins/Spa/src/"
+            "Webapps\\": "plugins/Webapps/src/"
         }
     },
     "autoload-dev": {
@@ -51,7 +51,8 @@
             "AdminApi\\Test\\": "plugins/AdminApi/tests/",
             "AuthenticationApi\\Test\\": "plugins/AuthenticationApi/tests/",
             "PublicApi\\Test\\": "plugins/PublicApi/tests/",
-            "Spa\\Test\\": "plugins/Spa/tests/"
+            "Spa\\Test\\": "plugins/Spa/tests/",
+            "Webapps\\Test\\": "plugins/Webapps/tests/"
         }
     },
     "scripts": {
