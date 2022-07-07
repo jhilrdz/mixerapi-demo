@@ -46,7 +46,7 @@ use Cake\Core\Configure;
  */
 return [
     'SwaggerBake' => [
-        'prefix' => '/public',
+        'prefix' => '/api/public',
         'yml' => '/plugins/PublicApi/config/swagger.yml',
         'json' => '/plugins/PublicApi/webroot/swagger.json',
         'webPath' => '/public_api/swagger.json',

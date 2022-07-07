@@ -3,13 +3,13 @@
     "info": {
         "version": "v0.0.0",
         "title": "MixerAPI Demo (Public API)",
-        "description": "Check out [MixerAPI.com](https:\/\/mixerapi.com) to streamline your API development.\n\nYou can view the source code for this [demo here](https:\/\/github.com\/mixerapi\/demo).\n\nIf you are viewing this on demo.mixerapi.com then the database resets every 24 hours.\n\nBrowse the [JSON-LD vocabulary](\/public\/vocab) for this API.\n\nGo back to the [homepage](\/).\n",
+        "description": "Check out [MixerAPI.com](https:\/\/mixerapi.com) to streamline your API development.\n\nYou can view the source code for this [demo here](https:\/\/github.com\/mixerapi\/demo).\n\nIf you are viewing this on demo.mixerapi.com then the database resets every 24 hours.\n\nBrowse the [JSON-LD vocabulary](\/api\/public\/vocab) for this API.\n\nGo back to the [homepage](\/).\n",
         "license": {
             "name": "MIT"
         }
     },
     "paths": {
-        "\/public\/actors": {
+        "\/api\/public\/actors": {
             "get": {
                 "operationId": "publicapi.actors:index:get",
                 "summary": "Actors Collection",
@@ -203,7 +203,7 @@
                 }
             }
         },
-        "\/public\/actors\/{id}": {
+        "\/api\/public\/actors\/{id}": {
             "get": {
                 "operationId": "publicapi.actors:view:get",
                 "summary": "Actor Resource",
@@ -318,7 +318,7 @@
                 }
             }
         },
-        "\/public\/actors\/{id}\/films": {
+        "\/api\/public\/actors\/{id}\/films": {
             "get": {
                 "operationId": "publicapi.actors:viewfilms:get",
                 "summary": "View Actor's Films",
@@ -788,7 +788,7 @@
                 }
             }
         },
-        "\/public\/film-reports\/by-category": {
+        "\/api\/public\/film-reports\/by-category": {
             "get": {
                 "operationId": "publicapi.filmreports:bycategory:get",
                 "summary": "Film Categories",
@@ -973,7 +973,7 @@
                 }
             }
         },
-        "\/public\/film-reports\/by-rating": {
+        "\/api\/public\/film-reports\/by-rating": {
             "get": {
                 "operationId": "publicapi.filmreports:byrating:get",
                 "summary": "Film Ratings",
@@ -1053,7 +1053,7 @@
                 }
             }
         },
-        "\/public\/films": {
+        "\/api\/public\/films": {
             "get": {
                 "operationId": "publicapi.films:index:get",
                 "summary": "Films Collection",
@@ -1304,7 +1304,7 @@
                 }
             }
         },
-        "\/public\/films\/{id}": {
+        "\/api\/public\/films\/{id}": {
             "get": {
                 "operationId": "publicapi.films:view:get",
                 "summary": "Film Resource",
@@ -1419,7 +1419,7 @@
                 }
             }
         },
-        "\/public\/films\/{id}\/actors": {
+        "\/api\/public\/films\/{id}\/actors": {
             "get": {
                 "operationId": "publicapi.films:viewactors:get",
                 "summary": "View Film's Actors",

@@ -29,7 +29,7 @@ class JwtAuthService
                 IdentifierInterface::CREDENTIAL_USERNAME => $usernameField,
                 IdentifierInterface::CREDENTIAL_PASSWORD => $passwordField,
             ],
-            'loginUrl' => '/api/auth/login'
+            'loginUrl' => '/api/admin/auth/login'
         ]);
 
         $service->loadIdentifier('Authentication.JwtSubject');

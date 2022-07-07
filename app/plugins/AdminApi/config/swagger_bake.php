@@ -46,7 +46,7 @@ use Cake\Core\Configure;
  */
 return [
     'SwaggerBake' => [
-        'prefix' => '/admin',
+        'prefix' => '/api/admin',
         'yml' => '/plugins/AdminApi/config/swagger.yml',
         'json' => '/plugins/AdminApi/webroot/swagger.json',
         'webPath' => '/admin_api/swagger.json',

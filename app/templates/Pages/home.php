@@ -34,7 +34,7 @@
                 <p>
                     Read-only API for viewing films, actors, and other cinematography meta-data<br/>
                 </p>
-                <a href="/public" class="button">Browse</a>
+                <a href="/api/public" class="button">Browse</a>
             </li>
             <!--
             <li>
@@ -52,7 +52,7 @@
                 <p>
                     An administrative API for managing actors, movies, etc.<br/>
                 </p>
-                <a href="/admin" class="button">Manage</a>
+                <a href="/api/admin" class="button">Manage</a>
             </li>
         </ul>
         <h3>About</h3>
